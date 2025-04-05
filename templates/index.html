@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Bot Purchase</title>
+</head>
+
+<body>
+   <h1>Запуск бота для покупки</h1>
+   <form id="purchaseForm" method="POST">
+      <label for="need_id">Введите ID:</label>
+      <input type="text" id="need_id" name="need_id" required>
+      <button type="submit">Запустить бота</button>
+   </form>
+
+   <script>
+      document.getElementById('purchaseForm').addEventListener('submit', function (event) {
+         event.preventDefault(); // Предотвращаем стандартную отправку формы
+
+         const need_id = document.getElementById('need_id').value;
+
+         // Отправляем запрос на сервер
+         fetch('/start_bot', {
+            method: 'POST',
+            body: new URLSearchParams({
+               'need_id': need_id
+            })
+         })
+            .then(response => response.json()) // Преобразуем ответ в JSON
+            .then(data => {
+               if (data.status === "success") {
+                  alert(data.message); // Показываем успех
+               } else {
+                  alert(data.message); // Показываем ошибку
+               }
+            })
+            .catch(error => {
+               console.error('Ошибка:', error);
+               alert('Произошла ошибка при запросе!');
+            });
+      });
+   </script>
+</body>
+
+</html>
